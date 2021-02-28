@@ -1,4 +1,4 @@
-package org.open.security;
+package org.open.security.mf.authenticator;
 
 /**
  * Hello world!

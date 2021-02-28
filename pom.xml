@@ -5,8 +5,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.open.security</groupId>
-  <artifactId>org.open.security.mf.authenticator</artifactId>
+  <artifactId>open-security-mf</artifactId>
   <version>1.0</version>
+  <modules>
+    <module>multi-factor-authenticator</module>
+    <module>multi-factor-demo</module>
+  </modules>
+  <packaging>pom</packaging>
 
   <name>multi-factor-authenticator</name>
   <!-- FIXME change it to the project's website -->
