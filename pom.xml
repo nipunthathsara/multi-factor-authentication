@@ -22,6 +22,9 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring.boot.version>2.4.1</spring.boot.version>
         <h2.version>1.4.192</h2.version>
+        <javax.mail.version>1.6.2</javax.mail.version>
+        <apache.commons.lang3.version>3.12.0</apache.commons.lang3.version>
+        <apache.commons.logging.version>1.2</apache.commons.logging.version>
     </properties>
 
     <dependencyManagement>
@@ -34,15 +37,25 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.11</version>
-            </dependency>
-            <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>javax.mail-api</artifactId>
+                <version>${javax.mail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache.commons.lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${apache.commons.logging.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
