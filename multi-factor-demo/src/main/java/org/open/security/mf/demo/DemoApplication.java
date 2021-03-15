@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Hello world!
+ * Multi factor authentication demo application.
  */
 
 @SpringBootApplication(scanBasePackages = "org.open.security")

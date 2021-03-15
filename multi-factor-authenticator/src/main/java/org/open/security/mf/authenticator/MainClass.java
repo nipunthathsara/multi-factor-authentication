@@ -16,30 +16,11 @@
  * under the License.
  */
 
-package org.open.security.mf.authenticator.service;
+package org.open.security.mf.authenticator;
 
-import org.open.security.mf.authenticator.exception.OpenSecurityMfException;
+public class MainClass {
 
-/**
- * This interface defines set of functions
- * for email based OTP validation.
- */
-public interface EmailOTPService {
+    public static void main(String[] args) {
 
-    /**
-     * Generate a random number according to the given character length.
-     *
-     * @param length
-     * @param charset
-     * @return
-     */
-    String generateOTP(int length, char[] charset);
-
-    /**
-     * Send an email OTP notification to the given email address.
-     *
-     * @param email
-     * @throws OpenSecurityMfException
-     */
-    void sendEmailOTP(String email) throws OpenSecurityMfException;
+    }
 }

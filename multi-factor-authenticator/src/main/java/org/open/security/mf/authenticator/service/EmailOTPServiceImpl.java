@@ -20,9 +20,12 @@ package org.open.security.mf.authenticator.service;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.open.security.mf.authenticator.constant.Constants;
 import org.open.security.mf.authenticator.exception.OpenSecurityMfException;
 import org.open.security.mf.authenticator.model.EmailOTPProperties;
+import org.open.security.mf.authenticator.model.OTP;
 import org.open.security.mf.authenticator.model.SMTPProperties;
+import org.open.security.mf.authenticator.repository.OTPRepository;
 import org.open.security.mf.authenticator.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,17 +38,22 @@ import javax.mail.Session;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.Random;
 
 import static org.open.security.mf.authenticator.constant.Constants.EMAIL_OTP_PLACE_HOLDER;
 import static org.open.security.mf.authenticator.constant.Constants.Error.OPEN_SEC_MF_001;
 
+/**
+ * This class implements the {@link EmailOTPService} interface.
+ */
 @Service
 public class EmailOTPServiceImpl implements EmailOTPService {
 
     private final Log log = LogFactory.getLog(EmailOTPServiceImpl.class);
+
+    @Autowired
+    private OTPRepository otpRepository;
 
     @Autowired
     private EmailOTPProperties emailOTPProperties;
@@ -54,21 +62,24 @@ public class EmailOTPServiceImpl implements EmailOTPService {
     private SMTPProperties smtpProperties;
 
     @Override
-    public int generateOTP(int length) {
+    public String generateOTP(int length, char[] charset) {
 
         Random rand = new Random();
         int[] otpSeq = new int[length];
         for (int i = 0; i < length; i++) {
-            otpSeq[i] = rand.nextInt(10);
+            otpSeq[i] = charset[rand.nextInt(charset.length - 1)];
         }
-        return Arrays.stream(otpSeq).findFirst().getAsInt();
+        return otpSeq.toString();
     }
 
     @Override
     public void sendEmailOTP(String email) throws OpenSecurityMfException {
 
-        int otp = generateOTP(emailOTPProperties.getEmailOtpLength());
-        String body = emailOTPProperties.getBody().replaceFirst(EMAIL_OTP_PLACE_HOLDER, Integer.toString(otp));
+        String otp = generateOTP(emailOTPProperties.getEmailOtpLength(), emailOTPProperties.getCharset().toCharArray());
+        // Persist generated OTP.
+        otpRepository.save(new OTP(email, otp, Constants.OTPStatus.ACTIVE.toString(), calculateExpiry()));
+        // Prepare email body.
+        String body = emailOTPProperties.getBody().replaceFirst(EMAIL_OTP_PLACE_HOLDER, otp);
         sendMail(email, emailOTPProperties.getSubject(), body);
     }
 
@@ -103,5 +114,10 @@ public class EmailOTPServiceImpl implements EmailOTPService {
             log.error("Error while sending the email to : " + receiver);
             throw Utils.handleException(OPEN_SEC_MF_001, receiver, e);
         }
+    }
+
+    private Long calculateExpiry() {
+
+        return System.currentTimeMillis() + emailOTPProperties.getExpiry() * 1000;
     }
 }

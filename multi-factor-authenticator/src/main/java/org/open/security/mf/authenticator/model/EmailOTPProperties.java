@@ -28,6 +28,24 @@ public class EmailOTPProperties {
     private int emailOtpLength;
     private String subject;
     private String body;
+    private int expiry;
+    private String charset;
+
+    public String getCharset() {
+        return charset;
+    }
+
+    public void setCharset(String charset) {
+        this.charset = charset;
+    }
+
+    public int getExpiry() {
+        return expiry;
+    }
+
+    public void setExpiry(int expiry) {
+        this.expiry = expiry;
+    }
 
     public String getSubject() {
         return subject;

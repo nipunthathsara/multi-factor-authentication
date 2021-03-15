@@ -53,4 +53,9 @@ public class Constants {
             return description;
         }
     }
+
+    public enum OTPStatus {
+
+        ACTIVE, EXPIRED, USED, REVOKED;
+    }
 }

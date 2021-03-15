@@ -16,30 +16,13 @@
  * under the License.
  */
 
-package org.open.security.mf.authenticator.service;
+package org.open.security.mf.authenticator.repository;
 
-import org.open.security.mf.authenticator.exception.OpenSecurityMfException;
+import org.open.security.mf.authenticator.model.OTP;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-/**
- * This interface defines set of functions
- * for email based OTP validation.
- */
-public interface EmailOTPService {
+@Repository
+public interface OTPRepository extends CrudRepository<OTP, Integer> {
 
-    /**
-     * Generate a random number according to the given character length.
-     *
-     * @param length
-     * @param charset
-     * @return
-     */
-    String generateOTP(int length, char[] charset);
-
-    /**
-     * Send an email OTP notification to the given email address.
-     *
-     * @param email
-     * @throws OpenSecurityMfException
-     */
-    void sendEmailOTP(String email) throws OpenSecurityMfException;
 }
