@@ -19,10 +19,13 @@
 package org.open.security.mf.authenticator.repository;
 
 import org.open.security.mf.authenticator.model.OTP;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OTPRepository extends CrudRepository<OTP, Integer> {
 
+    @Query("SELECT otp FROM EMAIL_OTP WHERE OTP = ?1")
+    OTP findByOTP(String otp);
 }

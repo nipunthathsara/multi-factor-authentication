@@ -25,7 +25,15 @@ public class Constants {
     public enum Error {
 
         OPEN_SEC_MF_001("001", "Error sending the email OTP.",
-                "Error while sending the email OTP to : %s.");
+                "Error while sending the email OTP to : %s."),
+        OPEN_SEC_MF_002("002", "Invalid OTP",
+                "Provided OTP is invalid."),
+        OPEN_SEC_MF_003("003", "Expired OTP",
+                "Provided OTP is expired already."),
+        OPEN_SEC_MF_004("004", "Used OTP",
+                "Provided OTP is already used."),
+        OPEN_SEC_MF_005("005", "Revoked OTP",
+                "Provided OTP is already revoked.");
 
         private final String code;
         private final String message;

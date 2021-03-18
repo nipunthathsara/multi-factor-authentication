@@ -42,4 +42,13 @@ public interface EmailOTPService {
      * @throws OpenSecurityMfException
      */
     void sendEmailOTP(String email) throws OpenSecurityMfException;
+
+    /**
+     * Validate if the given OTP is valid.
+     *
+     * @param otp
+     * @return true if valid.
+     * @throws OpenSecurityMfException
+     */
+    boolean validateOTP(String otp) throws OpenSecurityMfException;
 }

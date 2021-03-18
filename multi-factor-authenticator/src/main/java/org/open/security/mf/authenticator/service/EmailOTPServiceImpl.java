@@ -43,6 +43,10 @@ import java.util.Random;
 
 import static org.open.security.mf.authenticator.constant.Constants.EMAIL_OTP_PLACE_HOLDER;
 import static org.open.security.mf.authenticator.constant.Constants.Error.OPEN_SEC_MF_001;
+import static org.open.security.mf.authenticator.constant.Constants.Error.OPEN_SEC_MF_002;
+import static org.open.security.mf.authenticator.constant.Constants.Error.OPEN_SEC_MF_003;
+import static org.open.security.mf.authenticator.constant.Constants.Error.OPEN_SEC_MF_004;
+import static org.open.security.mf.authenticator.constant.Constants.Error.OPEN_SEC_MF_005;
 
 /**
  * This class implements the {@link EmailOTPService} interface.
@@ -81,6 +85,29 @@ public class EmailOTPServiceImpl implements EmailOTPService {
         // Prepare email body.
         String body = emailOTPProperties.getBody().replaceFirst(EMAIL_OTP_PLACE_HOLDER, otp);
         sendMail(email, emailOTPProperties.getSubject(), body);
+    }
+
+    @Override
+    public boolean validateOTP(String otp) throws OpenSecurityMfException {
+
+        OTP otpEntity = otpRepository.findByOTP(otp);
+        // Invalid OTP.
+        if (otpEntity == null) {
+            throw Utils.handleException(OPEN_SEC_MF_002, null);
+        }
+        // Expired OTP.
+        if (System.currentTimeMillis() > otpEntity.getExpiryTime()) {
+            throw Utils.handleException(OPEN_SEC_MF_003, null);
+        }
+        // Used OTP.
+        if (Constants.OTPStatus.USED.toString().equals(otpEntity.getStatus())) {
+            throw Utils.handleException(OPEN_SEC_MF_004, null);
+        }
+        // Revoked OTP.
+        if (Constants.OTPStatus.REVOKED.toString().equals(otpEntity.getStatus())) {
+            throw Utils.handleException(OPEN_SEC_MF_005, null);
+        }
+        return true;
     }
 
     private void sendMail(String receiver, String subject, String body) throws OpenSecurityMfException {

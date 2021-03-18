@@ -32,4 +32,13 @@ public class Utils {
         }
         return new OpenSecurityMfException(error.getCode(), error.getMessage(), description, e);
     }
+
+    public static OpenSecurityMfException handleException(Constants.Error error, String data) {
+
+        String description = error.getDescription();
+        if (StringUtils.isNotBlank(data)) {
+            String.format(description, data);
+        }
+        return new OpenSecurityMfException(error.getCode(), error.getMessage(), description);
+    }
 }

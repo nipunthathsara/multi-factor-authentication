@@ -16,26 +16,16 @@
  * under the License.
  */
 
-package org.open.security.mf.demo.controller;
+package org.open.security.mf.demo.service;
 
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.open.security.mf.demo.model.User;
+import org.springframework.stereotype.Service;
 
-@Controller
-public class DemoController {
+@Service
+public class UserService {
 
-    @RequestMapping(value = "index",
-                    produces = MediaType.TEXT_HTML_VALUE)
-    public String index() {
+    public void createUser(User user) {
 
-        return "index";
-    }
-
-    @RequestMapping(value = "register",
-                    produces = MediaType.TEXT_HTML_VALUE)
-    public String register() {
-
-        return "register";
+        System.out.println("*****");
     }
 }

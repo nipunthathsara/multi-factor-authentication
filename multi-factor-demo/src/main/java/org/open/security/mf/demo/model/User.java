@@ -16,26 +16,42 @@
  * under the License.
  */
 
-package org.open.security.mf.demo.controller;
+package org.open.security.mf.demo.model;
 
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.context.annotation.Bean;
 
-@Controller
-public class DemoController {
+import javax.persistence.Entity;
 
-    @RequestMapping(value = "index",
-                    produces = MediaType.TEXT_HTML_VALUE)
-    public String index() {
+/**
+ * This class represents the USer entity.
+ */
+public class User {
 
-        return "index";
+    private String id;
+    private String email;
+    private String password;
+
+    public String getId() {
+        return id;
     }
 
-    @RequestMapping(value = "register",
-                    produces = MediaType.TEXT_HTML_VALUE)
-    public String register() {
+    public void setId(String id) {
+        this.id = id;
+    }
 
-        return "register";
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -18,24 +18,27 @@
 
 package org.open.security.mf.demo.controller;
 
-import org.springframework.http.MediaType;
+import org.open.security.mf.demo.model.User;
+import org.open.security.mf.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
-public class DemoController {
+public class UserController {
 
-    @RequestMapping(value = "index",
-                    produces = MediaType.TEXT_HTML_VALUE)
-    public String index() {
+    @Autowired
+    UserService userService;
 
-        return "index";
+    @PostMapping("/addUser")
+    public String addUser(@ModelAttribute("user") User user) {
+
+        userService.createUser(user);
+        return "success";
     }
 
-    @RequestMapping(value = "register",
-                    produces = MediaType.TEXT_HTML_VALUE)
-    public String register() {
-
-        return "register";
-    }
 }
