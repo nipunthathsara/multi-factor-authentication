@@ -16,16 +16,14 @@
  * under the License.
  */
 
-package org.open.security.mf.demo.service;
+package org.open.security.mf.authenticator;
 
-import org.open.security.mf.demo.model.User;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@Service
-public class UserService {
+@SpringBootApplication(scanBasePackages = { "org.open.security" })
+public class ServiceComponent {
 
-    public void createUser(User user) {
+    public static void main(String[] args) {
 
-        System.out.println("*****");
     }
 }

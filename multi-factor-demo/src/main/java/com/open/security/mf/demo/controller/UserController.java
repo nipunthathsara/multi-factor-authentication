@@ -16,28 +16,28 @@
  * under the License.
  */
 
-package org.open.security.mf.demo.controller;
+package com.open.security.mf.demo.controller;
 
-import org.open.security.mf.demo.model.User;
+import com.open.security.mf.demo.service.UserService;
+import com.open.security.mf.demo.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class DemoController {
+public class UserController {
 
-    @RequestMapping(value = "index",
-                    produces = MediaType.TEXT_HTML_VALUE)
-    public String index() {
+    @Autowired
+    UserService userService;
 
-        return "index";
-    }
+    @PostMapping(value = "/user",
+                 produces = MediaType.TEXT_HTML_VALUE)
+    public String addUser(User user, Model model) {
 
-    @GetMapping(value = "/register",
-                produces = MediaType.TEXT_HTML_VALUE)
-    public String addUserGet(User user) {
-
-        return "register";
+        model.addAttribute(user);
+        userService.createUser(user);
+        return "registration-response";
     }
 }

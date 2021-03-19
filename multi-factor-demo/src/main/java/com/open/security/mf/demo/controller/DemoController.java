@@ -16,11 +16,28 @@
  * under the License.
  */
 
-package org.open.security.mf.authenticator;
+package com.open.security.mf.demo.controller;
 
-public class MainClass {
+import com.open.security.mf.demo.model.User;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-    public static void main(String[] args) {
+@Controller
+public class DemoController {
 
+    @RequestMapping(value = "index",
+                    produces = MediaType.TEXT_HTML_VALUE)
+    public String index() {
+
+        return "index";
+    }
+
+    @GetMapping(value = "/register",
+                produces = MediaType.TEXT_HTML_VALUE)
+    public String addUserGet(User user) {
+
+        return "register";
     }
 }

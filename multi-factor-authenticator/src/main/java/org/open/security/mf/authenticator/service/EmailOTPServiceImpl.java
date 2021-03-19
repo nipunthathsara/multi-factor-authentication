@@ -83,7 +83,7 @@ public class EmailOTPServiceImpl implements EmailOTPService {
         // Persist generated OTP.
         otpRepository.save(new OTP(email, otp, Constants.OTPStatus.ACTIVE.toString(), calculateExpiry()));
         // Prepare email body.
-        String body = emailOTPProperties.getBody().replaceFirst(EMAIL_OTP_PLACE_HOLDER, otp);
+        String body = emailOTPProperties.getBody().replace(EMAIL_OTP_PLACE_HOLDER, otp);
         sendMail(email, emailOTPProperties.getSubject(), body);
     }
 

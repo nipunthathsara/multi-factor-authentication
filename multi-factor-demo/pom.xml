@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.open.security.mf.demo</groupId>
+    <groupId>com.open.security.mf.demo</groupId>
     <artifactId>multi-factor-demo</artifactId>
     <packaging>jar</packaging>
 
@@ -41,7 +41,7 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <mainClass>org.open.security.mf.demo.DemoApplication</mainClass>
+                            <mainClass>com.open.security.mf.demo.DemoApplication</mainClass>
                         </configuration>
                     </execution>
                 </executions>

@@ -16,38 +16,11 @@
  * under the License.
  */
 
-package org.open.security.mf.demo.model;
+package com.open.security.mf.demo.constant;
 
-/**
- * This class represents the USer entity.
- */
-public class User {
+public class Constants {
 
-    private String id;
-    private String email;
-    private String password;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public static final String ACTIVE = "ACTIVE";
+    public static final String INACTIVE = "INACTIVE";
+    public static final String LOCKED = "LOCKED";
 }
