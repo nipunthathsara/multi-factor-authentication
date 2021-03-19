@@ -1,0 +1,10 @@
+<html xmlns:th="https://www.thymeleaf.org">
+    <head><title>Registration Response</title></head>
+    <body>
+        <h1>Registration Response</h1>
+        <!--/*@thymesVar id="user" type=org.open.security.mf.demo.model.User"*/-->
+        <div th:object="${user}">
+            <p> Hello th:text="${user.email}", Please go to your email and confirm your account.</p>
+        </div>
+    </body>
+</html>

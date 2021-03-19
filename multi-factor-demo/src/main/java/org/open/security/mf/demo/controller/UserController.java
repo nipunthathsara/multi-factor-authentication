@@ -21,12 +21,10 @@ package org.open.security.mf.demo.controller;
 import org.open.security.mf.demo.model.User;
 import org.open.security.mf.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
@@ -34,11 +32,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/addUser")
-    public String addUser(@ModelAttribute("user") User user) {
+    @PostMapping(value = "/user",
+                 produces = MediaType.TEXT_HTML_VALUE)
+    public String addUser(User user, Model model) {
 
+        model.addAttribute(user);
         userService.createUser(user);
-        return "success";
+        return "registration-response";
     }
-
 }

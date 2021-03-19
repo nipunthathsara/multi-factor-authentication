@@ -18,10 +18,6 @@
 
 package org.open.security.mf.demo.model;
 
-import org.springframework.context.annotation.Bean;
-
-import javax.persistence.Entity;
-
 /**
  * This class represents the USer entity.
  */

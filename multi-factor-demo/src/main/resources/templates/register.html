@@ -6,7 +6,8 @@
 </head>
 <body>
 <h1>Self-Registration</h1>
-<form action="#" th:action="@{/addUser}" th:object="${user}" method="post" modelAttribute="user">
+
+<form action="#" th:action="@{/user}" th:object="${user}" method="post" >
     <p>Email address : <input type="text" th:field="*{email}" /></p>
     <p>Password: <input type="text" th:field="*{password}" /></p>
     <p>Repeat Password: <input type="text"/></p>
