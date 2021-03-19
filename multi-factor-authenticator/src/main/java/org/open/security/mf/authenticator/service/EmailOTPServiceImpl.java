@@ -35,6 +35,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -69,17 +70,17 @@ public class EmailOTPServiceImpl implements EmailOTPService {
     public String generateOTP(int length, char[] charset) {
 
         Random rand = new Random();
-        int[] otpSeq = new int[length];
+        char[] otpSeq = new char[length];
         for (int i = 0; i < length; i++) {
             otpSeq[i] = charset[rand.nextInt(charset.length - 1)];
         }
-        return otpSeq.toString();
+        return new String(otpSeq);
     }
 
     @Override
     public void sendEmailOTP(String email) throws OpenSecurityMfException {
 
-        String otp = generateOTP(emailOTPProperties.getEmailOtpLength(), emailOTPProperties.getCharset().toCharArray());
+        String otp = generateOTP(emailOTPProperties.getLength(), emailOTPProperties.getCharset().toCharArray());
         // Persist generated OTP.
         otpRepository.save(new OTP(email, otp, Constants.OTPStatus.ACTIVE.toString(), calculateExpiry()));
         // Prepare email body.
@@ -134,6 +135,7 @@ public class EmailOTPServiceImpl implements EmailOTPService {
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
             message.setSubject(subject);
             message.setText(body);
+            Transport.send(message);
         } catch (AddressException e) {
             log.error("Error while sending the email to : " + receiver);
             throw Utils.handleException(OPEN_SEC_MF_001, receiver, e);

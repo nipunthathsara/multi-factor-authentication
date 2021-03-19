@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("email.otp")
 public class EmailOTPProperties {
 
-    private int emailOtpLength;
+    private int length;
     private String subject;
     private String body;
     private int expiry;
@@ -63,11 +63,11 @@ public class EmailOTPProperties {
         this.body = body;
     }
 
-    public int getEmailOtpLength() {
-        return emailOtpLength;
+    public int getLength() {
+        return length;
     }
 
-    public void setEmailOtpLength(int emailOtpLength) {
-        this.emailOtpLength = emailOtpLength;
+    public void setLength(int length) {
+        this.length = length;
     }
 }
