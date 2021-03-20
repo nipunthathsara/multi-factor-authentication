@@ -53,8 +53,9 @@ public class TOTPUtils {
     private int windowSize = 3;
     private TOTPSecureRandom secureRandom;
 
-    public TOTPUtils() throws OpenSecurityMfException {
+    public TOTPUtils(TOTPProperties totpProperties) throws OpenSecurityMfException {
 
+        this.totpProperties = totpProperties;
         secureRandom = new TOTPSecureRandom(totpProperties.getAlgorithm(), totpProperties.getProvider());
     }
 

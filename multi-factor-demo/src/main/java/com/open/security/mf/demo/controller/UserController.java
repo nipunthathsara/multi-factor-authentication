@@ -49,4 +49,13 @@ public class UserController {
 
         return userService.confirmAccount(otp, email);
     }
+
+//    @PostMapping(value = "/user/login",
+//                 produces = MediaType.TEXT_HTML_VALUE)
+//    public String addUser(User user, Model model) {
+//
+//        model.addAttribute(user);
+//        userService.createUser(user);
+//        return "registration-response";
+//    }
 }
