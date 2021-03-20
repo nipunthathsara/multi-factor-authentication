@@ -1,0 +1,10 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<head><title>Error Response</title></head>
+<body>
+<h1>Error Response</h1>
+<!--/*@thymesVar id="user" type=org.open.security.mf.demo.model.Error"*/-->
+<div th:object="${error}">
+    <p> Note : th:text="${error.message}".</p>
+</div>
+</body>
+</html>

@@ -18,6 +18,9 @@
 
 package com.open.security.mf.demo.controller;
 
+import com.open.security.mf.demo.exception.DemoAppException;
+import com.open.security.mf.demo.model.Error;
+import com.open.security.mf.demo.model.TOTPSecret;
 import com.open.security.mf.demo.service.UserService;
 import com.open.security.mf.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @Controller
 public class UserController {
@@ -41,13 +46,21 @@ public class UserController {
         return "registration-response";
     }
 
-    @GetMapping(value = "/user/confirm-account")
-    @ResponseBody
+    @GetMapping(value = "/user/confirm-account",
+                produces = MediaType.TEXT_HTML_VALUE)
     public String confirmAccount(
             @RequestParam(required = true) String otp,
-            @RequestParam(required = true) String email) {
+            @RequestParam(required = true) String email,
+            Model model) {
 
-        return userService.confirmAccount(otp, email);
+        try {
+            String totpSecret = userService.confirmAccount(otp, email);
+            model.addAllAttributes(Arrays.asList(new TOTPSecret(totpSecret)));
+            return "totp-secret";
+        } catch (DemoAppException e) {
+            model.addAllAttributes(Arrays.asList(new Error(e.getMessage())));
+            return "error";
+        }
     }
 
 //    @PostMapping(value = "/user/login",

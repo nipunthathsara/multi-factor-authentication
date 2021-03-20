@@ -18,6 +18,8 @@
 
 package com.open.security.mf.demo.service;
 
+import com.open.security.mf.demo.exception.DemoAppException;
+import com.open.security.mf.demo.util.Utils;
 import org.open.security.mf.authenticator.exception.OpenSecurityMfException;
 import org.open.security.mf.authenticator.service.EmailOTPServiceImpl;
 import com.open.security.mf.demo.constant.Constants;
@@ -30,6 +32,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 import static com.open.security.mf.demo.constant.Constants.ACTIVE;
+import static com.open.security.mf.demo.constant.Constants.Error.DEMO_ERROR_GENERATING_TOTP_SECRET;
 
 @Service
 public class UserService {
@@ -56,20 +59,19 @@ public class UserService {
         }
     }
 
-    public String confirmAccount(String otp, String email) {
+    public String confirmAccount(String otp, String email) throws DemoAppException {
 
         try {
             emailOTPService.validateOTP(otp, email);
             userRepository.updateStatus(ACTIVE, email);
         } catch (OpenSecurityMfException e) {
-            e.printStackTrace();
-            return "Not verified";
+            throw Utils.handleException(Constants.Error.DEMO_INVALID_OTP);
         }
         try {
             return totpService.generateSecret();
         } catch (OpenSecurityMfException e) {
             e.printStackTrace();
+            throw Utils.handleException(DEMO_ERROR_GENERATING_TOTP_SECRET);
         }
-        return "Error";
     }
 }

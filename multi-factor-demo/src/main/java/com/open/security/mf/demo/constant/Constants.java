@@ -23,4 +23,31 @@ public class Constants {
     public static final String ACTIVE = "ACTIVE";
     public static final String INACTIVE = "INACTIVE";
     public static final String LOCKED = "LOCKED";
+
+
+    public enum Error {
+
+        DEMO_INVALID_OTP("001", "Invalid OTP"),
+        DEMO_ERROR_VALIDATING_OTP("002", "Error while validating the OTP."),
+        DEMO_ERROR_GENERATING_TOTP_SECRET("003", "Error while generating TOTP secret.");
+
+        private final String code;
+        private final String message;
+
+        Error(String code, String message) {
+
+            this.code = code;
+            this.message = message;
+        }
+
+        public String getCode() {
+
+            return code;
+        }
+
+        public String getMessage() {
+
+            return message;
+        }
+    }
 }
