@@ -26,6 +26,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OTPRepository extends CrudRepository<OTP, Integer> {
 
-    @Query("SELECT otp FROM EMAIL_OTP WHERE OTP = ?1")
-    OTP findByOTP(String otp);
+    @Query(value = "SELECT * FROM EMAIL_OTP WHERE OTP = ?1 AND EMAIL_ADDRESS = ?2", nativeQuery = true)
+    OTP findByOTP(String otp, String email);
 }

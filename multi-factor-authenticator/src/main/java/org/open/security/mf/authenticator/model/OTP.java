@@ -48,6 +48,10 @@ public class OTP implements Serializable {
         this.expiryTime = expiryTime;
     }
 
+    public OTP() {
+
+    }
+
     public int getId() {
         return id;
     }

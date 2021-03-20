@@ -28,6 +28,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static com.open.security.mf.demo.constant.Constants.ACTIVE;
+
 @Service
 public class UserService {
 
@@ -47,6 +49,16 @@ public class UserService {
         } catch (OpenSecurityMfException e) {
             e.printStackTrace();
         }
-        System.out.println("*****");
+    }
+
+    public boolean confirmAccount(String otp, String email) {
+
+        try {
+            emailOTPService.validateOTP(otp, email);
+        } catch (OpenSecurityMfException e) {
+            e.printStackTrace();
+        }
+        userRepository.updateStatus(ACTIVE, email);
+        return true;
     }
 }

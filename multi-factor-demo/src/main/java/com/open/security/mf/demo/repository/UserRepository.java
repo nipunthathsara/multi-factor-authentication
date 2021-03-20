@@ -19,10 +19,17 @@
 package com.open.security.mf.demo.repository;
 
 import com.open.security.mf.demo.model.User;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE USERS SET STATUS = ?1 WHERE EMAIL = ?2", nativeQuery = true)
+    void updateStatus(String status, String email);
 }

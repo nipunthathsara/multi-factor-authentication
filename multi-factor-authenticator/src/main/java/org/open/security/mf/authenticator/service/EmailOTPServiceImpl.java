@@ -42,6 +42,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 import java.util.Random;
 
+import static org.open.security.mf.authenticator.constant.Constants.EMAIL_ADDRESS_PACE_HOLDER;
 import static org.open.security.mf.authenticator.constant.Constants.EMAIL_OTP_PLACE_HOLDER;
 import static org.open.security.mf.authenticator.constant.Constants.Error.OPEN_SEC_MF_001;
 import static org.open.security.mf.authenticator.constant.Constants.Error.OPEN_SEC_MF_002;
@@ -85,13 +86,14 @@ public class EmailOTPServiceImpl implements EmailOTPService {
         otpRepository.save(new OTP(email, otp, Constants.OTPStatus.ACTIVE.toString(), calculateExpiry()));
         // Prepare email body.
         String body = emailOTPProperties.getBody().replace(EMAIL_OTP_PLACE_HOLDER, otp);
+        body = body.replace(EMAIL_ADDRESS_PACE_HOLDER, email);
         sendMail(email, emailOTPProperties.getSubject(), body);
     }
 
     @Override
-    public boolean validateOTP(String otp) throws OpenSecurityMfException {
+    public boolean validateOTP(String otp, String email) throws OpenSecurityMfException {
 
-        OTP otpEntity = otpRepository.findByOTP(otp);
+        OTP otpEntity = otpRepository.findByOTP(otp, email);
         // Invalid OTP.
         if (otpEntity == null) {
             throw Utils.handleException(OPEN_SEC_MF_002, null);

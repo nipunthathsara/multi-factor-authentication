@@ -40,4 +40,17 @@ public class UserController {
         userService.createUser(user);
         return "registration-response";
     }
+
+    @GetMapping(value = "/user/confirm-account")
+    @ResponseBody
+    public String confirmAccount(
+            @RequestParam(required = true) String otp,
+            @RequestParam(required = true) String email) {
+
+        boolean isVerified = userService.confirmAccount(otp, email);
+        if (isVerified) {
+            return "Verified";
+        }
+        return "Not verified";
+    }
 }

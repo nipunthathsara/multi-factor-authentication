@@ -21,6 +21,7 @@ package org.open.security.mf.authenticator.constant;
 public class Constants {
 
     public static final String EMAIL_OTP_PLACE_HOLDER = "{{email.otp}}";
+    public static final String EMAIL_ADDRESS_PACE_HOLDER = "{{email.address}}";
 
     public enum Error {
 
