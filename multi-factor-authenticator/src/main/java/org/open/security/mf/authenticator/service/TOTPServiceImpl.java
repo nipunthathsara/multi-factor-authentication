@@ -44,12 +44,12 @@ public class TOTPServiceImpl implements TOTPService {
     }
 
     @Override
-    public boolean validateCode(String secret, int totp) throws OpenSecurityMfException {
+    public boolean validateCode(String secret, int code) throws OpenSecurityMfException {
 
         if (secret == null) {
             throw Utils.handleException(OPEN_SEC_MF_010, "Secret null");
         }
-        return (totp > 0 && totp < totpUtils.getKeyModulus()) && totpUtils
-                .checkCode(secret, totp, (new Date()).getTime());
+        return (code > 0 && code < totpUtils.getKeyModulus()) && totpUtils
+                .checkCode(secret, code, (new Date()).getTime());
     }
 }

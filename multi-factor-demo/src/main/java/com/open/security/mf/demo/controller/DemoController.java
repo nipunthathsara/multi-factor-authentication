@@ -18,6 +18,7 @@
 
 package com.open.security.mf.demo.controller;
 
+import com.open.security.mf.demo.model.Credential;
 import com.open.security.mf.demo.model.User;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -39,5 +40,13 @@ public class DemoController {
     public String addUserGet(User user) {
 
         return "register";
+    }
+
+
+    @GetMapping(value = "/login",
+                produces = MediaType.TEXT_HTML_VALUE)
+    public String login() {
+
+        return "login";
     }
 }

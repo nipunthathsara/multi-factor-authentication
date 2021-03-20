@@ -29,7 +29,13 @@ public class Constants {
 
         DEMO_INVALID_OTP("001", "Invalid OTP"),
         DEMO_ERROR_VALIDATING_OTP("002", "Error while validating the OTP."),
-        DEMO_ERROR_GENERATING_TOTP_SECRET("003", "Error while generating TOTP secret.");
+        DEMO_ERROR_GENERATING_TOTP_SECRET("003", "Error while generating TOTP secret."),
+        DEMO_ERROR_AUTHENTICATION_REQUIRED_PARAMS("004", "Required parameters blank."),
+        DEMO_ERROR_AUTHENTICATION_WRONG_CRED("005", "Wrong credentials."),
+        DEMO_ERROR_AUTHENTICATION_UNVERIFIED_ACCOUNT("006", "Unverified account."),
+        DEMO_ERROR_AUTHENTICATION_TOTP_REQUIRED_PARAMS("007", "One time password required."),
+        DEMO_ERROR_AUTHENTICATION_TOTP_CODE_VALIDATION("008", "Error while validating TOTP code."),
+        DEMO_ERROR_AUTHENTICATION_TOTP_CODE_INVALID("009", "Invalid TOTP code.");
 
         private final String code;
         private final String message;

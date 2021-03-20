@@ -35,12 +35,12 @@ public interface TOTPService {
     String generateSecret() throws OpenSecurityMfException;
 
     /**
-     * Validates a given totp token against its secret.
+     * Validates a given code token against its secret.
      *
      * @param secret
-     * @param totp
+     * @param code
      * @return
      * @throws OpenSecurityMfException
      */
-    boolean validateCode(String secret, int totp) throws OpenSecurityMfException;
+    boolean validateCode(String secret, int code) throws OpenSecurityMfException;
 }

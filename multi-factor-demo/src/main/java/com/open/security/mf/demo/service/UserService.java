@@ -19,7 +19,9 @@
 package com.open.security.mf.demo.service;
 
 import com.open.security.mf.demo.exception.DemoAppException;
+import com.open.security.mf.demo.model.Credential;
 import com.open.security.mf.demo.util.Utils;
+import org.apache.commons.lang3.StringUtils;
 import org.open.security.mf.authenticator.exception.OpenSecurityMfException;
 import org.open.security.mf.authenticator.service.EmailOTPServiceImpl;
 import com.open.security.mf.demo.constant.Constants;
@@ -32,6 +34,12 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 import static com.open.security.mf.demo.constant.Constants.ACTIVE;
+import static com.open.security.mf.demo.constant.Constants.Error.DEMO_ERROR_AUTHENTICATION_REQUIRED_PARAMS;
+import static com.open.security.mf.demo.constant.Constants.Error.DEMO_ERROR_AUTHENTICATION_TOTP_CODE_INVALID;
+import static com.open.security.mf.demo.constant.Constants.Error.DEMO_ERROR_AUTHENTICATION_TOTP_CODE_VALIDATION;
+import static com.open.security.mf.demo.constant.Constants.Error.DEMO_ERROR_AUTHENTICATION_TOTP_REQUIRED_PARAMS;
+import static com.open.security.mf.demo.constant.Constants.Error.DEMO_ERROR_AUTHENTICATION_UNVERIFIED_ACCOUNT;
+import static com.open.security.mf.demo.constant.Constants.Error.DEMO_ERROR_AUTHENTICATION_WRONG_CRED;
 import static com.open.security.mf.demo.constant.Constants.Error.DEMO_ERROR_GENERATING_TOTP_SECRET;
 
 @Service
@@ -73,5 +81,38 @@ public class UserService {
             e.printStackTrace();
             throw Utils.handleException(DEMO_ERROR_GENERATING_TOTP_SECRET);
         }
+    }
+
+    public String authenticate(Credential cred) throws DemoAppException {
+
+        if (cred == null || StringUtils.isBlank(cred.getEmail()) || StringUtils.isBlank(cred.getPassword())) {
+            throw Utils.handleException(DEMO_ERROR_AUTHENTICATION_REQUIRED_PARAMS);
+        }
+        User user = userRepository.authenticate(cred.getEmail(), cred.getPassword());
+        if (user == null) {
+            throw Utils.handleException(DEMO_ERROR_AUTHENTICATION_WRONG_CRED);
+        }
+        if (!ACTIVE.equals(user.getStatus())) {
+            throw Utils.handleException(DEMO_ERROR_AUTHENTICATION_UNVERIFIED_ACCOUNT);
+        }
+        return user.getEmail();
+    }
+
+    public String validateTOTPCode(String email, String code) throws DemoAppException {
+
+        if (StringUtils.isBlank(email) || StringUtils.isBlank(code)) {
+            throw Utils.handleException(DEMO_ERROR_AUTHENTICATION_TOTP_REQUIRED_PARAMS);
+        }
+        User user = userRepository.findByEmail(email);
+        boolean isValid;
+        try {
+            isValid = totpService.validateCode(user.getSecret(), Integer.valueOf(code));
+        } catch (OpenSecurityMfException e) {
+            throw Utils.handleException(DEMO_ERROR_AUTHENTICATION_TOTP_CODE_VALIDATION);
+        }
+        if (isValid) {
+            throw Utils.handleException(DEMO_ERROR_AUTHENTICATION_TOTP_CODE_INVALID);
+        }
+        return email;
     }
 }

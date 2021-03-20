@@ -18,6 +18,7 @@
 
 package org.open.security.mf.authenticator.util;
 
+import org.apache.commons.codec.binary.Base32;
 import org.open.security.mf.authenticator.exception.OpenSecurityMfException;
 
 import java.security.InvalidKeyException;
@@ -25,7 +26,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.codec.binary.Base64;
 import org.open.security.mf.authenticator.model.TOTPProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -69,27 +69,60 @@ public class TOTPUtils {
         return windowSize;
     }
 
+    /**
+     * Generate the credential.
+     *
+     * @return credential
+     * @throws OpenSecurityMfException
+     */
     public String createCredentials() throws OpenSecurityMfException {
 
-        byte[] buffer = new byte[30];
+        // Allocating a buffer sufficiently large to hold the bytes required by
+        // the secret key and the scratch codes.
+        byte[] buffer = new byte[SECRET_BITS / 8 + SCRATCH_CODES * BYTES_PER_SCRATCH_CODE];
+
         secureRandom.nextBytes(buffer);
-        byte[] secretKey = Arrays.copyOf(buffer, 10);
-//        String generatedKey = this.calculateSecretKey(secretKey);
-//        int validationCode = this.calculateValidationCode(secretKey);
-//        return new TOTPAuthenticatorKey(generatedKey, validationCode);
+
+        // Extracting the bytes making up the secret key.
+        byte[] secretKey = Arrays.copyOf(buffer, SECRET_BITS / 8);
         return calculateSecretKey(secretKey);
+
+        // Generating the verification code at time = 0.
+//        int validationCode = calculateValidationCode(secretKey);
     }
 
+    /**
+     * This method calculates the secret key given a random byte buffer.
+     *
+     * @param secretKey
+     * @return
+     */
     private String calculateSecretKey(byte[] secretKey) {
 
-        return (new Base64()).encodeToString(secretKey);
+        return new Base32().encodeToString(secretKey);
     }
 
+    /**
+     * This method calculates the validation code at time 0.
+     *
+     * @param secretKey The secret key to use.
+     * @return the validation code at time 0.
+     * @throws OpenSecurityMfException
+     */
     private int calculateValidationCode(byte[] secretKey) throws OpenSecurityMfException {
-
-        return calculateCode(secretKey, 0L);
+        return calculateCode(secretKey, 0);
     }
 
+    /**
+     * Calculates the verification code of the provided key at the specified
+     * instant of time.
+     *
+     * @param key the secret key in binary format
+     * @param tm  the instant of time
+     * @return the validation code for the provided key at the specified instant
+     * of time.
+     * @throws OpenSecurityMfException
+     */
     private int calculateCode(byte[] key, long tm) throws OpenSecurityMfException {
 
         // Allocating an array of bytes to represent the specified instant
@@ -146,28 +179,60 @@ public class TOTPUtils {
         }
     }
 
+    /**
+     * This method implements the algorithm specified in RFC 6238 to check if a validation code is
+     * valid in a given instant of time for the given secret key.
+     *
+     * @param secret    The Base32 encoded secret key
+     * @param code      The code to validate
+     * @param timestamp The instant of time to use during the validation process
+     * @return <code>true</code> if the validation code is valid, <code>false</code> otherwise
+     * @throws OpenSecurityMfException
+     */
     public boolean checkCode(String secret, long code, long timestamp) throws OpenSecurityMfException {
 
-        byte[] decodedKey = this.decodeSecret(secret);
-        long timeWindow = this.getTimeWindowFromTime(timestamp);
+        byte[] decodedKey = decodeSecret(secret);
 
-        for(int i = -((windowSize - 1) / 2); i <= windowSize / 2; ++i) {
-            long hash = calculateCode(decodedKey, timeWindow + (long)i);
+        // convert unix time into a 30 second "window" as specified by the TOTP specification.
+        // Using default interval of 30 seconds.
+        final long timeWindow = getTimeWindowFromTime(timestamp);
+
+        // Calculating the verification code of the given key in each of the
+        // time intervals and returning true if the provided code is equal to
+        // one of them.
+        for (int i = -((windowSize - 1) / 2); i <= windowSize / 2; ++i) {
+            // Calculating the verification code for the current time interval.
+            long hash = calculateCode(decodedKey, timeWindow + i);
+
+            // Checking if the provided code is equal to the calculated one.
             if (hash == code) {
+                // The verification code is valid.
                 return true;
             }
         }
+        // The verification code is invalid.
         return false;
     }
 
+    /**
+     * ecode the secret key.
+     *
+     * @param secret
+     * @return
+     */
     private byte[] decodeSecret(String secret) {
 
-        Base64 codec64 = new Base64();
-        return codec64.decode(secret);
+        Base32 codec32 = new Base32();
+        return codec32.decode(secret);
     }
 
+    /**
+     * Get time window form time.
+     *
+     * @param time time in millisecond
+     * @return time window form time
+     */
     private long getTimeWindowFromTime(long time) {
-
         return time / timeStepSizeInMillis;
     }
 }

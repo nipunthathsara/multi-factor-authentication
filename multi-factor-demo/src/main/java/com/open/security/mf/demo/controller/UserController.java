@@ -19,7 +19,9 @@
 package com.open.security.mf.demo.controller;
 
 import com.open.security.mf.demo.exception.DemoAppException;
+import com.open.security.mf.demo.model.Credential;
 import com.open.security.mf.demo.model.Error;
+import com.open.security.mf.demo.model.TOTPCode;
 import com.open.security.mf.demo.model.TOTPSecret;
 import com.open.security.mf.demo.service.UserService;
 import com.open.security.mf.demo.model.User;
@@ -63,12 +65,32 @@ public class UserController {
         }
     }
 
-//    @PostMapping(value = "/user/login",
-//                 produces = MediaType.TEXT_HTML_VALUE)
-//    public String addUser(User user, Model model) {
-//
-//        model.addAttribute(user);
-//        userService.createUser(user);
-//        return "registration-response";
-//    }
+    @PostMapping(value = "/user/authenticate",
+                 produces = MediaType.TEXT_HTML_VALUE)
+    public String authenticate(Credential credential, Model model) {
+
+        model.addAttribute(credential);
+        String email;
+        try {
+            email = userService.authenticate(credential);
+        } catch (DemoAppException e) {
+            model.addAllAttributes(Arrays.asList(new Error(e.getMessage())));
+            return "error";
+        }
+        return "login-response";
+    }
+
+    @PostMapping(value = "/user/totp-authenticate",
+                 produces = MediaType.TEXT_HTML_VALUE)
+    public String validateTOTP(TOTPCode code, Model model) {
+
+        model.addAttribute(code);
+        try {
+            userService.validateTOTPCode(null, code.getCode());
+        } catch (DemoAppException e) {
+            model.addAllAttributes(Arrays.asList(new Error(e.getMessage())));
+            return "error";
+        }
+        return "home";
+    }
 }

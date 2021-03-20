@@ -30,6 +30,7 @@ import static org.open.security.mf.authenticator.constant.Constants.Error.OPEN_S
 
 public class TOTPSecureRandom {
 
+    private static final int MAX_OPERATIONS = 1_000_000;
     private final String provider;
     private final String algorithm;
     private final AtomicInteger count = new AtomicInteger(0);
@@ -48,6 +49,9 @@ public class TOTPSecureRandom {
         }
     }
 
+    /**
+     * Build secure random.
+     */
     private void buildSecureRandom() throws OpenSecurityMfException{
         try {
             if (this.algorithm == null && this.provider == null) {
@@ -57,7 +61,6 @@ public class TOTPSecureRandom {
             } else {
                 this.secureRandom = SecureRandom.getInstance(this.algorithm, this.provider);
             }
-
         } catch (NoSuchAlgorithmException e) {
             throw Utils.handleException(OPEN_SEC_MF_006,
                     String.format("Could not initialise SecureRandom with the specified algorithm : %s. Change "
@@ -69,13 +72,17 @@ public class TOTPSecureRandom {
         }
     }
 
+    /**
+     * Generate a user-specified number of random bytes.
+     *
+     * @param bytes The array to be filled in with random bytes
+     */
     void nextBytes(byte[] bytes) throws OpenSecurityMfException {
-
-        if (this.count.incrementAndGet() > 1000000) {
-            synchronized(this) {
-                if (this.count.get() > 1000000) {
-                    this.buildSecureRandom();
-                    this.count.set(0);
+        if (count.incrementAndGet() > MAX_OPERATIONS) {
+            synchronized (this) {
+                if (count.get() > MAX_OPERATIONS) {
+                    buildSecureRandom();
+                    count.set(0);
                 }
             }
         }
