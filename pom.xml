@@ -25,6 +25,7 @@
         <javax.mail.version>1.6.2</javax.mail.version>
         <apache.commons.lang3.version>3.12.0</apache.commons.lang3.version>
         <apache.commons.logging.version>1.2</apache.commons.logging.version>
+        <apache.commons.codec.version>1.4.0</apache.commons.codec.version>
     </properties>
 
     <dependencyManagement>
@@ -47,8 +48,8 @@
                 <version>${h2.version}</version>
             </dependency>
             <dependency>
-<!--                <groupId>javax.mail</groupId>-->
-<!--                <artifactId>javax.mail-api</artifactId>-->
+                <!--                <groupId>javax.mail</groupId>-->
+                <!--                <artifactId>javax.mail-api</artifactId>-->
                 <groupId>com.sun.mail</groupId>
                 <artifactId>javax.mail</artifactId>
                 <version>${javax.mail.version}</version>
@@ -67,6 +68,16 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-thymeleaf</artifactId>
                 <version>${spring.boot.version}</version>
+            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.apache.commons</groupId>-->
+<!--                <artifactId>codec</artifactId>-->
+<!--                <version>apache.commons.codec.version</version>-->
+<!--            </dependency>-->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.10</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

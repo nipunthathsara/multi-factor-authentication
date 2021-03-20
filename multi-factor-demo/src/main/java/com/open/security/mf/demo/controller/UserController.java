@@ -47,10 +47,6 @@ public class UserController {
             @RequestParam(required = true) String otp,
             @RequestParam(required = true) String email) {
 
-        boolean isVerified = userService.confirmAccount(otp, email);
-        if (isVerified) {
-            return "Verified";
-        }
-        return "Not verified";
+        return userService.confirmAccount(otp, email);
     }
 }

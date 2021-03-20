@@ -23,6 +23,7 @@ import org.open.security.mf.authenticator.service.EmailOTPServiceImpl;
 import com.open.security.mf.demo.constant.Constants;
 import com.open.security.mf.demo.model.User;
 import com.open.security.mf.demo.repository.UserRepository;
+import org.open.security.mf.authenticator.service.TOTPServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,26 +40,36 @@ public class UserService {
     @Autowired
     EmailOTPServiceImpl emailOTPService;
 
+    @Autowired
+    TOTPServiceImpl totpService;
+
     public void createUser(User user) {
 
         user.setId(UUID.randomUUID().toString());
         user.setStatus(Constants.INACTIVE);
-        userRepository.save(user);
         try {
+            user.setSecret(totpService.generateSecret());
+            userRepository.save(user);
             emailOTPService.sendEmailOTP(user.getEmail());
         } catch (OpenSecurityMfException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean confirmAccount(String otp, String email) {
+    public String confirmAccount(String otp, String email) {
 
         try {
             emailOTPService.validateOTP(otp, email);
+            userRepository.updateStatus(ACTIVE, email);
+        } catch (OpenSecurityMfException e) {
+            e.printStackTrace();
+            return "Not verified";
+        }
+        try {
+            return totpService.generateSecret();
         } catch (OpenSecurityMfException e) {
             e.printStackTrace();
         }
-        userRepository.updateStatus(ACTIVE, email);
-        return true;
+        return "Error";
     }
 }

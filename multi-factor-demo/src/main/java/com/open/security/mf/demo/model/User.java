@@ -39,6 +39,8 @@ public class User {
     private String password;
     @Column(name = "STATUS")
     private String status;
+    @Column(name = "SECRET")
+    private String secret;
 
     public String getId() {
         return id;
@@ -70,5 +72,13 @@ public class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }

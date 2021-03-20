@@ -34,7 +34,17 @@ public class Constants {
         OPEN_SEC_MF_004("004", "Used OTP",
                 "Provided OTP is already used."),
         OPEN_SEC_MF_005("005", "Revoked OTP",
-                "Provided OTP is already revoked.");
+                "Provided OTP is already revoked."),
+        OPEN_SEC_MF_006("006", "Invalid TOTP algorithm",
+                "Invalid TOTP algorithm : %s."),
+        OPEN_SEC_MF_007("007", "Invalid TOTP provider",
+                "Invalid TOTP provider : %s."),
+        OPEN_SEC_MF_008("008", "Couldn't find algorithm",
+                "Couldn't find algorithm."),
+        OPEN_SEC_MF_009("009", "Error initializing the algorithm",
+                "Error initializing the algorithm.."),
+        OPEN_SEC_MF_010("010", "Invalid TOTP secret",
+                "Invalid TOTP secret. %s");
 
         private final String code;
         private final String message;
