@@ -1,10 +1,10 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head><title>Second factor authentication</title></head>
     <body>
+    <h1>Second factor authentication - TOTP</h1>
     <!--/*@thymesVar id="credential" type=com.open.security.mf.demo.model.Credential"*/-->
     <div>
-        <p> Hello  <span th:text="${credential.email}"/>", please provide the generated one time password to proceed
-            .</p>
+        <p> Hello  <span th:text="${credential.email}"/>, please provide the generated one time password to proceed.</p>
 
         <form action="#" th:action="@{/user/totp-authenticate}" th:object="${credential}" method="post" >
             <input type="hidden" th:field="*{email}" text="${credential.email}"/>
@@ -12,6 +12,8 @@
             <p><input type="submit" value="Submit" />
         </form>
     </div>
-    <h1>Second factor authentication</h1>
+
+    <p>Back to <a href="http://localhost:8080/open-security-demo/register">register.</a></p>
+    <p>Back to <a href="http://localhost:8080/open-security-demo/login">login.</a></p>
     </body>
 </html>

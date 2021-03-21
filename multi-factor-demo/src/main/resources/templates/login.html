@@ -1,16 +1,19 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
-<head>
-    <title>Login page</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-<h1>User login</h1>
-<!--/*@thymesVar id="credential" type=org.open.security.mf.demo.model.Credential"*/-->
-<form action="#" th:action="@{/user/authenticate}" th:object="${credential}" method="post" >
-    <p>Email address : <input type="text" th:field="*{email}" /></p>
-    <p>Password: <input type="text" th:field="*{password}" /></p>
-    <p><input type="submit" value="Submit" /></p>
-</form>
-</body>
+    <head>
+        <title>Login page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <h1>User login</h1>
+        <!--/*@thymesVar id="credential" type=org.open.security.mf.demo.model.Credential"*/-->
+        <form action="#" th:action="@{/user/authenticate}" th:object="${credential}" method="post" >
+            <p>Email address : <input type="text" th:field="*{email}" /></p>
+            <p>Password: <input type="text" th:field="*{password}" /></p>
+            <p><input type="submit" value="Submit" /></p>
+        </form>
+
+        <p>Don'e have an account?
+            <a href="http://localhost:8080/open-security-demo/register">Register from here.</a></p>
+    </body>
 </html>

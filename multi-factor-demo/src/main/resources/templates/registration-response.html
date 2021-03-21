@@ -1,10 +1,11 @@
 <html xmlns:th="https://www.thymeleaf.org">
     <head><title>Registration Response</title></head>
     <body>
-        <h1>Registration Response</h1>
+        <h1>Account created.</h1>
         <!--/*@thymesVar id="user" type=org.open.security.mf.demo.model.User"*/-->
         <div>
             <p> Hello <span th:text="${user.email}"/>, Please go to your email and confirm your account.</p>
         </div>
+        <p>Proceed to <a href="http://localhost:8080/open-security-demo/login">login.</a></p>
     </body>
 </html>
