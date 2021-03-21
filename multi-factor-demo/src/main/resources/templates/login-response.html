@@ -1,17 +1,17 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head><title>Second factor authentication</title></head>
-<body>
-<h1>Second factor authentication</h1>
-<!--/*@thymesVar id="user" type=org.open.security.mf.demo.model.User"*/-->
-<div th:object="${user}">
-    <p> Hello th:text="${user.email}", please provide the generated one time password to proceed.</p>
+    <body>
+    <!--/*@thymesVar id="credential" type=com.open.security.mf.demo.model.Credential"*/-->
+    <div>
+        <p> Hello  <span th:text="${credential.email}"/>", please provide the generated one time password to proceed
+            .</p>
 
-    <!--/*@thymesVar id="totpCode" type=com.open.security.mf.demo.model.TOTPCode"*/-->
-    <form action="#" th:action="@{/user/totp-authenticate}" th:object="${totpCode}" method="post" >
-        <input type="hidden" th:value="*{email}" value="${user.email}"/>
-        <p>One time code : <input type="text" th:field="*{code}" /></p>
-        <p><input type="submit" value="Submit" />
-    </form>
-</div>
-</body>
+        <form action="#" th:action="@{/user/totp-authenticate}" th:object="${credential}" method="post" >
+            <input type="hidden" th:field="*{email}" text="${credential.email}"/>
+            <p>One time code : <input type="text" th:field="*{code}" /></p>
+            <p><input type="submit" value="Submit" />
+        </form>
+    </div>
+    <h1>Second factor authentication</h1>
+    </body>
 </html>

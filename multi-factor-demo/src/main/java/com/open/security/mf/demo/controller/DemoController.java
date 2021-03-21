@@ -19,6 +19,7 @@
 package com.open.security.mf.demo.controller;
 
 import com.open.security.mf.demo.model.Credential;
+import com.open.security.mf.demo.model.TOTPCode;
 import com.open.security.mf.demo.model.User;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -45,7 +46,7 @@ public class DemoController {
 
     @GetMapping(value = "/login",
                 produces = MediaType.TEXT_HTML_VALUE)
-    public String login() {
+    public String login(Credential credential) {
 
         return "login";
     }

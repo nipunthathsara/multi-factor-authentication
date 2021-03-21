@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>User login</h1>
-
+<!--/*@thymesVar id="credential" type=org.open.security.mf.demo.model.Credential"*/-->
 <form action="#" th:action="@{/user/authenticate}" th:object="${credential}" method="post" >
     <p>Email address : <input type="text" th:field="*{email}" /></p>
     <p>Password: <input type="text" th:field="*{password}" /></p>

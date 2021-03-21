@@ -22,13 +22,15 @@ public class Credential {
 
     private String email;
     private String password;
+    private String code;
 
     public Credential() {}
 
-    public Credential(String email, String password) {
+    public Credential(String email, String password, String code) {
 
         this.email = email;
         this.password = password;
+        this.code = code;
     }
 
     public String getEmail() {
@@ -45,5 +47,13 @@ public class Credential {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
